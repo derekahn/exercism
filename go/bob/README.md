@@ -28,3 +28,28 @@ Inspired by the 'Deaf Grandma' exercise in Chris Pine's Learn to Program tutoria
 ## Submitting Incomplete Problems
 It's possible to submit an incomplete solution so you can see how others have completed the exercise.
 
+### First attempt
+
+```go
+func Hey(statement string) string {
+	arr := strings.Split(statement, "")
+	lastChar := []rune(arr[len(arr)-1])[0]
+	second := []rune(arr[2])[0]
+
+	response := map[rune]string{
+		32:   "Fine. Be that way!", // " "
+		63:   "Sure.",              // ?
+		9:    "Fine. Be that way!", // \t
+		8194: "Fine. Be that way!", // \u2002
+	}[lastChar]
+
+	if strings.ToUpper(statement) == statement && second > 64 && second < 91 {
+		response = "Whoa, chill out!"
+	}
+	if response == "" {
+		response = "Whatever."
+	}
+
+	return response
+}
+```
