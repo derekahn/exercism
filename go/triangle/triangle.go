@@ -1,6 +1,9 @@
 package triangle
 
-import "math"
+import (
+	"math"
+	"sort"
+)
 
 const testVersion = 3
 
@@ -9,15 +12,16 @@ type kind int
 
 const (
 	NaT Kind = iota // not a triangle
-	Equ Kind = iota // equilateral
-	Iso Kind = iota // isosceles
-	Sca Kind = iota // scalene
+	Equ             // equilateral
+	Iso             // isosceles
+	Sca             // scalene
 )
 
 func KindFromSides(a, b, c float64) Kind {
-	x, y, z := sortSides(a, b, c)
+	side := []float64{a, b, c}
+	sort.Float64s(side)
 
-	if math.IsNaN(0*x*y*z) || x <= 0 || (x+y) < z {
+	if math.IsNaN(0*a*b*c) || side[0] <= 0 || (side[0]+side[1]) < side[2] {
 		return NaT
 	}
 
@@ -25,33 +29,9 @@ func KindFromSides(a, b, c float64) Kind {
 		return Equ
 	}
 
-	if x == y || y == z {
+	if side[0] == side[1] || side[1] == side[2] {
 		return Iso
 	}
 
 	return Sca
-}
-
-func sortSides(a, b, c float64) (x, y, z float64) {
-
-	if a <= b && b <= c {
-		return a, b, c
-	}
-
-	if a >= b && b >= c {
-		return c, b, a
-	}
-
-	if b < a {
-		if a < c {
-			return b, a, c
-		}
-		return b, c, a
-	}
-
-	if a < c {
-		return a, c, b
-	}
-
-	return c, a, b
 }
