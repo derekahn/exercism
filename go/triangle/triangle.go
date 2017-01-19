@@ -1,17 +1,57 @@
 package triangle
 
-const testVersion = 2
+import "math"
 
-// Code this function.
-func KindFromSides(a, b, c float64) Kind
+const testVersion = 3
 
-// Notice it returns this type.  Pick something suitable.
-type Kind
+type Kind kind
+type kind int
 
-// Pick values for the following identifiers used by the test program.
-NaT // not a triangle
-Equ // equilateral
-Iso // isosceles
-Sca // scalene
+const (
+	NaT Kind = iota // not a triangle
+	Equ Kind = iota // equilateral
+	Iso Kind = iota // isosceles
+	Sca Kind = iota // scalene
+)
 
-// Organize your code for readability.
+func KindFromSides(a, b, c float64) Kind {
+	x, y, z := sortSides(a, b, c)
+
+	if math.IsNaN(0*x*y*z) || x <= 0 || (x+y) < z {
+		return NaT
+	}
+
+	if a == b && b == c {
+		return Equ
+	}
+
+	if x == y || y == z {
+		return Iso
+	}
+
+	return Sca
+}
+
+func sortSides(a, b, c float64) (x, y, z float64) {
+
+	if a <= b && b <= c {
+		return a, b, c
+	}
+
+	if a >= b && b >= c {
+		return c, b, a
+	}
+
+	if b < a {
+		if a < c {
+			return b, a, c
+		}
+		return b, c, a
+	}
+
+	if a < c {
+		return a, c, b
+	}
+
+	return c, a, b
+}
