@@ -7,11 +7,10 @@ import (
 
 const testVersion = 2
 
+var isQuestion = regexp.MustCompile(`\?\s*$`)
+var hasWord = regexp.MustCompile(`\w`)
+
 func Hey(said string) string {
-
-	isQuestion := regexp.MustCompile(`\?\s*$`)
-	hasWord := regexp.MustCompile(`\w`)
-
 	if said != strings.ToLower(said) && said == strings.ToUpper(said) {
 		return "Whoa, chill out!"
 	}
