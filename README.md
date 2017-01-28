@@ -1,2 +1,3 @@
-# exercism
+# 🔰 exercism
+
 Algorithms for learning
