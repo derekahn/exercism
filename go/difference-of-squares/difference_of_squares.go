@@ -6,7 +6,7 @@ func square(n int) int {
 
 func SquareOfSums(n int) int {
 
-	var sum int
+	sum := 0
 	for i := 1; i <= n; i++ {
 		sum += i
 	}
@@ -15,15 +15,10 @@ func SquareOfSums(n int) int {
 }
 
 func SumOfSquares(n int) int {
-	squares := make([]int, n)
 
+	sum := 0
 	for i := 1; i <= n; i++ {
-		squares[i-1] = square(i)
-	}
-
-	var sum int
-	for _, s := range squares {
-		sum += s
+		sum += (i * i)
 	}
 
 	return sum
