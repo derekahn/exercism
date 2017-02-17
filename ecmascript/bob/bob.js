@@ -1,15 +1,15 @@
-//
-// This is only a SKELETON file for the 'Bob' exercise. It's been provided as a
-// convenience to get you started writing code faster.
-//
-
-class Bob {
+export default class Bob {
   hey(message) {
-    //
-    // YOUR CODE GOES HERE
-    //
+    if (message !== message.toLowerCase() &&
+        message === message.toUpperCase()) {
+      return 'Whoa, chill out!';
+    }
+    if (message.split('')[message.length - 1] === '?') {
+      return 'Sure.';
+    }
+    if (message == '' || /^\s+$/.test(message)) {
+      return 'Fine. Be that way!';
+    }
+    return 'Whatever.';
   }
 }
-
-export default Bob;
-
