@@ -1,4 +1,4 @@
-import Bob from './bob.js';
+import Bob from './solution';
 
 describe('Bob', () => {
 
