@@ -4,28 +4,9 @@ export default class Pangram {
   }
 
   isPangram() {
-    // Create object with key of letter and default val false
-    let alpha = Array(26)
-                .fill({})
-                .reduce((obj, _, i) => {
-                  obj[String.fromCharCode(97 + i)] = false;
-                  return obj;
-                }, {});
+    const alphabet = [...Array(26)].map((_, i) => String.fromCharCode(i+97));
+    const sentence = this.sentence.toLowerCase();
 
-    // Toggle letter
-    this
-    .sentence
-    .split('')
-    .forEach(l => {
-      if (typeof alpha[l.toLowerCase()] !== 'undefined') {
-        alpha[l.toLowerCase()] = true;
-      }
-    });
-
-    // Test for falsey
-    return !Object
-      .keys(alpha)
-      .map(l => alpha[l])
-      .includes(false);
+    return alphabet.every(element => sentence.indexOf(element) !== -1);
   }
 }
