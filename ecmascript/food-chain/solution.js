@@ -40,12 +40,21 @@ export default class Song {
       `She's dead, of course!\n` :
       `I don't know why she swallowed the fly. Perhaps she'll die.\n`;
   }
-  sing() {
+  song() {
     return this.animals.map((animal, i) =>
       [this.intro(animal), this.rhyme[animal], this.hook(i), this.ending(animal)].join('')
     );
   }
   verse(index) {
-    return this.sing()[index - 1];
+    return this.song()[index - 1];
+  }
+  verses(start, end) {
+    let verses = [];
+
+    for (let i = start; i <= end; i++) {
+      verses.push(this.verse(i))
+    }
+
+    return verses.join('\n') + '\n';
   }
 }
