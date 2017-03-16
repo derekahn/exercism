@@ -1,4 +1,4 @@
-import Song from './food-chain';
+import Song from './solution';
 
 describe('Food Chain', () => {
   let song;
@@ -15,7 +15,7 @@ I don't know why she swallowed the fly. Perhaps she'll die.
     expect(song.verse(1)).toEqual(expected);
   });
 
-  xit('spider', () => {
+  it('spider', () => {
     const expected = `I know an old lady who swallowed a spider.
 It wriggled and jiggled and tickled inside her.
 She swallowed the spider to catch the fly.
@@ -25,7 +25,7 @@ I don't know why she swallowed the fly. Perhaps she'll die.
     expect(song.verse(2)).toEqual(expected);
   });
 
-  xit('bird', () => {
+  it('bird', () => {
     const expected = `I know an old lady who swallowed a bird.
 How absurd to swallow a bird!
 She swallowed the bird to catch the spider that wriggled and jiggled and tickled inside her.
@@ -36,7 +36,7 @@ I don't know why she swallowed the fly. Perhaps she'll die.
     expect(song.verse(3)).toEqual(expected);
   });
 
-  xit('cat', () => {
+  it('cat', () => {
     const expected = `I know an old lady who swallowed a cat.
 Imagine that, to swallow a cat!
 She swallowed the cat to catch the bird.
@@ -48,7 +48,7 @@ I don't know why she swallowed the fly. Perhaps she'll die.
     expect(song.verse(4)).toEqual(expected);
   });
 
-  xit('dog', () => {
+  it('dog', () => {
     const expected = `I know an old lady who swallowed a dog.
 What a hog, to swallow a dog!
 She swallowed the dog to catch the cat.
@@ -61,7 +61,7 @@ I don't know why she swallowed the fly. Perhaps she'll die.
     expect(song.verse(5)).toEqual(expected);
   });
 
-  xit('goat', () => {
+  it('goat', () => {
     const expected = `I know an old lady who swallowed a goat.
 Just opened her throat and swallowed a goat!
 She swallowed the goat to catch the dog.
@@ -75,7 +75,7 @@ I don't know why she swallowed the fly. Perhaps she'll die.
     expect(song.verse(6)).toEqual(expected);
   });
 
-  xit('cow', () => {
+  it('cow', () => {
     const expected = `I know an old lady who swallowed a cow.
 I don't know how she swallowed a cow!
 She swallowed the cow to catch the goat.
@@ -90,7 +90,7 @@ I don't know why she swallowed the fly. Perhaps she'll die.
     expect(song.verse(7)).toEqual(expected);
   });
 
-  xit('horse', () => {
+  it('horse', () => {
     const expected = `I know an old lady who swallowed a horse.
 She's dead, of course!
 `;
