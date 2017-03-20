@@ -1,4 +1,4 @@
-import Robot from './robot-name';
+import Robot from './solution';
 
 describe('Robot', () => {
   let robot;
@@ -11,16 +11,16 @@ describe('Robot', () => {
     expect(robot.name).toMatch(/^[A-Z]{2}\d{3}$/);
   });
 
-  xit('name is the same each time', () => {
+  it('name is the same each time', () => {
     expect(robot.name).toEqual(robot.name);
   });
 
-  xit('different robots have different names', () => {
+  it('different robots have different names', () => {
     const differentRobot = new Robot();
     expect(differentRobot.name).not.toEqual(robot.name);
   });
 
-  xit('there can be lots of robots with different names each', () => {
+  it('there can be lots of robots with different names each', () => {
     const NUMBER_OF_ROBOTS = 10000;
     const usedNames = new Set();
 
@@ -32,7 +32,7 @@ describe('Robot', () => {
     expect(usedNames.size).toEqual(NUMBER_OF_ROBOTS);
   });
 
-  xit('is able to reset the name', () => {
+  it('is able to reset the name', () => {
     const originalName = robot.name;
 
     robot.reset();
@@ -42,7 +42,7 @@ describe('Robot', () => {
     expect(originalName).not.toEqual(newName);
   });
 
-  xit('should set a unique name after reset', () => {
+  it('should set a unique name after reset', () => {
     const NUMBER_OF_ROBOTS = 10000;
     const usedNames = new Set();
 
@@ -55,13 +55,13 @@ describe('Robot', () => {
     expect(usedNames.size).toEqual(NUMBER_OF_ROBOTS + 1);
   });
 
-  xit('internal name cannot be modified', () => {
+  it('internal name cannot be modified', () => {
     const modifyInternal = () => robot.name += "a modification";
     expect(modifyInternal).toThrow();
   });
 
 
-  xit('new names should not be sequential', () => {
+  it('new names should not be sequential', () => {
     const name1 = robot.name;
     const name2 = (new Robot()).name;
     const name3 = (new Robot()).name;
@@ -70,7 +70,7 @@ describe('Robot', () => {
     expect(areSequential(name2, name3)).toBe(false);
   });
 
-  xit('names from reset should not be sequential', () => {
+  it('names from reset should not be sequential', () => {
     const name1 = robot.name;
     robot.reset();
     const name2 = robot.name;
