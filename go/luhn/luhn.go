@@ -26,8 +26,9 @@ func Valid(cardNum string) (valid bool) {
 	for index, r := range reversedStr {
 		if isEven(index) {
 			nums = append(nums, properDouble(r))
+		} else {
+			nums = append(nums, string(r))
 		}
-		nums = append(nums, string(r))
 	}
 
 	sum := 0
@@ -64,11 +65,26 @@ func isEven(i int) bool {
 	return (i+1)%2 == 0
 }
 
+func check(d []int) int {
+	for i := len(d) - 1; i >= 0; i -= 2 {
+		x := 2 * d[i]
+		if x > 9 {
+			x -= 9
+		}
+		d[i] = x
+	}
+	s := 0
+	for _, x := range d {
+		s += x
+	}
+	return s
+}
+
 func properDouble(r rune) string {
 	num, _ := strconv.Atoi(string(r))
-	num = num + num
-	if num > 9 {
-		num = num - 9
+	double := num * 2
+	if double > 9 {
+		double -= 9
 	}
-	return strconv.Itoa(num)
+	return strconv.Itoa(double)
 }
