@@ -11,13 +11,13 @@ func LargestSeriesProduct(digits string, span int) (maxProduct int64, err error)
 	}
 
 	for i, last := 0, len(nums)-span+1; i < last; i++ {
-		sp := int64(1)
-		for _, d := range nums[i : i+span] {
-			sp *= d
+		set := int64(1)
+		for _, digit := range nums[i : i+span] {
+			set *= digit
 		}
 
-		if sp > maxProduct {
-			maxProduct = sp
+		if set > maxProduct {
+			maxProduct = set
 		}
 	}
 	return
