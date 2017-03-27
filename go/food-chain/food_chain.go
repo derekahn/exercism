@@ -28,14 +28,29 @@ var animals = [8]string{
 	"horse",
 }
 
-func Song() string {
-	verses := []string{}
+func sing() (verses []string) {
 	for i, animal := range animals {
 		verse := intro(animal) + rhyme[animal] + hook(i) + end(animal)
 		verses = append(verses, verse)
 	}
+	return
+}
 
-	return strings.Join(verses, "\n")
+func Song() string {
+	return strings.Join(sing(), "\n")
+}
+
+func Verse(index int) string {
+	return strings.Trim(sing()[index-1], "\n")
+}
+
+func Verses(start, end int) string {
+	verses := []string{}
+	for i := start; i <= end; i++ {
+		verses = append(verses, Verse(i)+"\n")
+	}
+
+	return strings.Trim(strings.Join(verses, "\n"), "\n")
 }
 
 // Mechanics to create the song
