@@ -1,32 +1,29 @@
 export default (hour, minute = 0) => {
-  const MINUTESPERDAY = 1440;
-  const HOURSPERDAY = 24;
+  const clock = { hour, minute };
 
-  let clock = { hour, minute };
-
-  function formatNum(num) {
-    const numString = num.toString();
-    return numString.length === 1 ? `0${numString}` : numString;
-  }
-
-  function adjustTime(delta) {
-    delta = Math.abs(delta) >= MINUTESPERDAY ? delta % MINUTESPERDAY : delta;
+  const adjustTime = (d = 0) => {
+    const dayIn = { mins: 1440, hours: 24 };
+    const delta = Math.abs(d) >= dayIn.mins ? d % dayIn.mins : d;
 
     const currentMinutes = clock.hour * 60 + clock.minute;
-    let newMinutes = (currentMinutes + delta) % MINUTESPERDAY;
+    let newMinutes = (currentMinutes + delta) % dayIn.mins;
 
-    newMinutes = newMinutes < 0 ? (newMinutes += MINUTESPERDAY) : newMinutes;
+    newMinutes = newMinutes < 0 ? (newMinutes += dayIn.mins) : newMinutes;
 
-    clock.hour = Math.floor(newMinutes / 60) % HOURSPERDAY;
+    clock.hour = Math.floor(newMinutes / 60) % dayIn.hours;
     clock.minute = newMinutes - clock.hour * 60;
-  }
+  };
 
-  adjustTime(0);
+  adjustTime();
 
   return {
     clock,
     toString() {
-      return formatNum(clock.hour) + ":" + formatNum(clock.minute);
+      const formatNum = num => {
+        const numString = num.toString();
+        return numString.length === 1 ? `0${numString}` : numString;
+      };
+      return `${formatNum(clock.hour)}:${formatNum(clock.minute)}`;
     },
     plus(minutes) {
       adjustTime(minutes);
@@ -41,6 +38,6 @@ export default (hour, minute = 0) => {
         clock.hour === otherClock.clock.hour &&
         clock.minute === otherClock.clock.minute
       );
-    }
+    },
   };
 };
