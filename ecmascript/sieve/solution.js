@@ -5,15 +5,21 @@ export default class Sieve {
   }
 
   getPrimesUpTo(limit) {
-    const sieve = [];
+    const start = 2;
 
-    for (let i = 2; i <= limit; i++) {
-      if (!sieve[i]) {
-        this.primes.push(i);
-        for (let j = 2 * i; j <= limit; j += i) {
-          sieve[j] = true
+    Array(start + limit)
+      .fill(0)
+      .map( (_, i) => i )
+      .slice(start)
+      .filter(i => i <= limit)
+      .reduce((sieve, i) => {
+        if (!sieve[i]) {
+          this.primes.push(i);
+          for (let j = 2 * i; j <= limit; j += i) {
+            sieve[j] = true
+          }
         }
-      }
-    }
+        return sieve;
+      }, []);
   }
 }
