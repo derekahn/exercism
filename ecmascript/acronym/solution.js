@@ -3,7 +3,7 @@ export default class Acronyms {
     return phrase
       .match(/[A-Z]+[a-z]*|[a-z]+/g)
       .reduce((acronym, word) =>
-        acronym += word[0].toUpperCase()
+        `${acronym}${word[0].toUpperCase()}`
       , '');
   }
 }
