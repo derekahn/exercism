@@ -6,14 +6,13 @@ const testVersion = 1
 
 func Detect(word string, candidates []string) (result []string) {
 	word = strings.ToLower(word)
-
 	for _, candidate := range candidates {
 		candidate = strings.ToLower(candidate)
 		if isAnagram(word, candidate) {
 			result = append(result, candidate)
 		}
 	}
-	return result
+	return
 }
 
 func isAnagram(word string, candidate string) bool {
