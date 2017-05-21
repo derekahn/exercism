@@ -16,7 +16,7 @@ func ToRomanNumeral(number int) (string, error) {
 	buffer := bytes.NewBufferString("")
 
 	if number <= 0 || number >= 4000 {
-		return "", fmt.Errorf("The number %d is undefined in the roman numeral system.", number)
+		return "", fmt.Errorf("The number %d is undefined", number)
 	}
 
 	mappings := []rosettaStone{
