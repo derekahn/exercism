@@ -1,4 +1,4 @@
-import accumulate from './accumulate';
+import accumulate from './solution';
 
 describe('accumulate()', () => {
 
@@ -7,25 +7,25 @@ describe('accumulate()', () => {
     expect(accumulate([], accumulator)).toEqual([]);
   });
 
-  xit('accumulate squares', () => {
+  it('accumulate squares', () => {
     const accumulator = number => number * number;
     const result = accumulate([1, 2, 3], accumulator);
     expect(result).toEqual([1, 4, 9]);
   });
 
-  xit('accumulate upcases', () => {
+  it('accumulate upcases', () => {
     const accumulator =  word => word.toUpperCase();
     const result = accumulate('hello world'.split(/\s/), accumulator);
     expect(result).toEqual(['HELLO', 'WORLD']);
   });
 
-  xit('accumulate reversed strings', () => {
+  it('accumulate reversed strings', () => {
     const accumulator = word => word.split('').reverse().join('');
     const result = accumulate('the quick brown fox etc'.split(/\s/), accumulator);
     expect(result).toEqual(['eht', 'kciuq', 'nworb', 'xof', 'cte']);
   });
 
-  xit('accumulate recursively', () => {
+  it('accumulate recursively', () => {
     const result = accumulate('a b c'.split(/\s/), char => {
       return accumulate('1 2 3'.split(/\s/), digit => {
         return char + digit;
