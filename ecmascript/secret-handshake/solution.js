@@ -1,21 +1,34 @@
-const REVERSE  = 'REVERSE';
-const COMMANDS = ['wink', 'double blink', 'close your eyes', 'jump', REVERSE];
-
-export default function (handshake) {
-  if (typeof handshake !== 'number') {
-    throw new Error('Handshake must be a number');
+export default class HandShake {
+  constructor(handshake) {
+    if (typeof handshake !== 'number') {
+      throw new Error('handshake requires type number');
+    }
+    this.handshake = handshake;
+    this.shakeWith = this.calculateHandshake(handshake);
   }
+  commands() {
+    return this.shakeWith;
+  }
+  calculateHandshake() {
+    const REVERSE = 'REVERSE';
+    const HANDSHAKE_COMMANDS = [
+      'wink',
+      'double blink',
+      'close your eyes',
+      'jump',
+      REVERSE,
+    ];
 
-  this.commands = () => this.shakeWith;
-
-  this.calculateHandshake = shake =>
-    COMMANDS.reduce((arr, command, i) => {
-      const hasCommand = shake & Math.pow(2, i);
-      if (hasCommand) {
-        command === REVERSE ? arr.reverse() : arr.push(command);
+    return HANDSHAKE_COMMANDS.reduce((shakeWith, command, i) => {
+      const handshakeHasCommand = this.handshake & Math.pow(2, i);
+      if (handshakeHasCommand) {
+        if (command === REVERSE) {
+          shakeWith.reverse();
+        } else {
+          shakeWith.push(command);
+        }
       }
-      return arr;
+      return shakeWith;
     }, []);
-
-  this.shakeWith = this.calculateHandshake(handshake);
-};
+  }
+}
