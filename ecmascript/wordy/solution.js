@@ -13,7 +13,7 @@ const ArgumentError = (message = 'invalid') => ({
 class WordProblem {
   constructor(question) {
     this.question = this.parse(question);
-    this.hasOps   = question.match(new RegExp(/(plus|minus|divided by|multiplied by)+/g));
+    this.hasOps = question.match(new RegExp(/(plus|minus|divided by|multiplied by)+/g));
   }
   parse(question) {
     return question.replace('?', '')
