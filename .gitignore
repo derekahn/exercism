@@ -1,3 +1,11 @@
+.exercism
+
+# js
 node_modules
 babel-output
 yarn.lock
+
+# rust
+/target/
+**/*.rs.bk
+Cargo.lock
