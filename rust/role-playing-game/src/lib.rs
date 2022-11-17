@@ -1,6 +1,4 @@
 // This stub file contains items that aren't used yet; feel free to remove this module attribute
-// to enable stricter warnings.
-#![allow(unused)]
 
 pub struct Player {
     pub health: u32,
@@ -10,35 +8,32 @@ pub struct Player {
 
 impl Player {
     pub fn revive(&self) -> Option<Player> {
-        if self.health > 0 {
-            return None;
-        }
-
-        Some(Player {
+        (self.health <= 0).then(|| Self {
             health: 100,
-            mana: if self.level > 9 { Some(100) } else { None },
+            mana: (self.level > 9).then_some(100),
             level: self.level,
         })
     }
 
     pub fn cast_spell(&mut self, mana_cost: u32) -> u32 {
-        let current_mana = self.mana.unwrap_or(0);
-
-        let is_insufficient_mana = current_mana > 0 && mana_cost > current_mana;
-        if is_insufficient_mana {
-            return 0;
-        }
-
-        if current_mana == 0 {
-            self.health = if self.health > mana_cost {
-                self.health - mana_cost
-            } else {
+        match self.mana {
+            // No mana pool: no damage, damages player instead
+            None => {
+                self.health = match self.health {
+                    h if h < mana_cost => 0,
+                    h => h - mana_cost,
+                };
                 0
-            };
-            return 0;
-        }
+            }
 
-        self.mana = Some(current_mana - mana_cost);
-        mana_cost * 2
+            // Insufficient mana: no damage
+            Some(mana) if mana < mana_cost => 0,
+
+            // Sufficient mana: damage is equal to double the cost
+            Some(mana) => {
+                self.mana.replace(mana - mana_cost);
+                2 * mana_cost
+            }
+        }
     }
 }
