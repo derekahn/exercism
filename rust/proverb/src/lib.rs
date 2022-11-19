@@ -1,11 +1,13 @@
-pub fn build_proverb(list: &[&str]) -> String {
-    if list.is_empty() {
-        return String::new();
-    }
+use std::iter::once;
 
-    list.iter()
-        .zip(list.iter().skip(1))
-        .map(|(&w1, &w2)| format!("For want of a {} the {} was lost.\n", w1, w2))
-        .collect::<String>()
-        + &format!("And all for the want of a {}.", list[0])
+pub fn build_proverb(list: &[&str]) -> String {
+    match list.len() {
+        0 => String::new(),
+        _ => list
+            .windows(2)
+            .map(|w| format!("For want of a {} the {} was lost.", w[0], w[1]))
+            .chain(once(format!("And all for the want of a {}.", list[0])))
+            .collect::<Vec<String>>()
+            .join("\n"),
+    }
 }
