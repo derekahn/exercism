@@ -1,12 +1,12 @@
 pub fn factors(n: u64) -> Vec<u64> {
     let mut primes = Vec::new();
-    let mut idx = n.clone();
 
-    while idx > 1 {
-        if let Some(p) = (2..=idx).find(|&x| idx % x == 0) {
+    match (2..=n).find(|&x| n % x == 0) {
+        Some(p) => {
             primes.push(p);
-            idx /= p;
+            primes.append(&mut factors(n / p));
         }
+        None => {}
     }
 
     primes
