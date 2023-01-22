@@ -1,117 +1,68 @@
 use std::collections::HashMap;
 
-#[derive(Debug)]
-struct Row {
-    team: String,
-    played: u8,
-    wins: u8,
-    draws: u8,
-    loss: u8,
-    points: u8,
+#[derive(Default)]
+struct Results {
+    won: i8,
+    loss: i8,
+    drawn: i8,
 }
 
-impl Row {
-    fn new(team: String) -> Self {
-        Self {
+impl Results {
+    fn score(&self) -> i8 {
+        self.won * 3 + self.drawn
+    }
+
+    fn to_string(&self, team: &str) -> String {
+        format!(
+            "{:<30} | {:>2} | {:>2} | {:>2} | {:>2} | {:>2}",
             team,
-            played: 0,
-            wins: 0,
-            draws: 0,
-            loss: 0,
-            points: 0,
-        }
+            self.won + self.drawn + self.loss,
+            self.won,
+            self.drawn,
+            self.loss,
+            self.score()
+        )
     }
 }
 
 pub fn tally(match_results: &str) -> String {
-    let header = format!(
-        "{0: <30} | {1: >2} | {2: >2} | {3: >2} | {4: >2} | {5: >2}",
-        "Team", "MP", "W", "D", "L", "P"
-    );
-
-    if match_results.is_empty() {
-        return header;
-    }
-
-    let teams: HashMap<&str, Row> = match_results
-        .split(|c: char| c == ';' || c == '\n')
-        .filter(|&w| {
-            !w.is_empty() && !w.contains("win") && !w.contains("loss") && !w.contains("draw")
-        })
+    let mut teams: Vec<(&str, Results)> = match_results
+        .lines()
         .into_iter()
-        .fold(HashMap::new(), |mut acc, team| {
-            acc.insert(team, Row::new(team.into()));
-            acc
-        });
-
-    let results = match_results
-        .split('\n')
-        .into_iter()
-        .fold(teams, |mut acc, line| {
-            let game: Vec<&str> = line.split(';').map(|word| word).collect();
-            let (team1, team2, result) = (game[0], game[1], game[2]);
+        .fold(HashMap::<&str, Results>::new(), |mut team, line| {
+            let frag: Vec<&str> = line.split(';').collect();
+            let (left, right, result) = (frag[0], frag[1], frag[2]);
 
             match result {
                 "win" => {
-                    let team1 = acc
-                        .get_mut(team1)
-                        .expect("[win] Row should exist for team1");
-                    team1.played += 1;
-                    team1.wins += 1;
-                    team1.points += 3;
-
-                    let team2 = acc
-                        .get_mut(team2)
-                        .expect("[win] Row should exist for team2");
-                    team2.played += 1;
-                    team2.loss += 1;
+                    team.entry(left).or_default().won += 1;
+                    team.entry(right).or_default().loss += 1;
                 }
                 "loss" => {
-                    let team1 = acc
-                        .get_mut(team1)
-                        .expect("[loss] Row should exist for team1");
-                    team1.played += 1;
-                    team1.loss += 1;
-
-                    let team2 = acc
-                        .get_mut(team2)
-                        .expect("[loss] Row should exist for team2");
-                    team2.played += 1;
-                    team2.wins += 1;
-                    team2.points += 3;
+                    team.entry(left).or_default().loss += 1;
+                    team.entry(right).or_default().won += 1;
                 }
                 "draw" => {
-                    let team1 = acc
-                        .get_mut(team1)
-                        .expect("[draw] Row should exist for team1");
-                    team1.played += 1;
-                    team1.draws += 1;
-                    team1.points += 1;
-
-                    let team2 = acc
-                        .get_mut(team2)
-                        .expect("[draw] Row should exist for team2");
-                    team2.played += 1;
-                    team2.draws += 1;
-                    team2.points += 1;
+                    team.entry(left).or_default().drawn += 1;
+                    team.entry(right).or_default().drawn += 1;
                 }
-                _ => panic!("Should be only a win, loss, or draw!"),
+                _ => unreachable!(),
             }
-            acc
-        });
+            team
+        })
+        .into_iter()
+        .collect();
 
-    let mut order: Vec<(u8, &str)> = results.iter().fold(Vec::new(), |mut acc, (&team, row)| {
-        acc.push((row.points, team));
-        acc
-    });
-    order.sort_by(|a, b| b.0.cmp(&a.0).then(a.1.cmp(b.1)));
-    order.into_iter().fold(header, |acc, (_, team)| {
-        let row = results.get(team).expect("team_row must exist");
-        let line = format!(
-            "{0: <30} | {1: >2} | {2: >2} | {3: >2} | {4: >2} | {5: >2}",
-            row.team, row.played, row.wins, row.draws, row.loss, row.points,
-        );
+    teams.sort_by_key(|team| (-team.1.score(), team.0));
 
-        format!("{acc}\n{line}")
-    })
+    let header = format!(
+        "{: <30} | {: >2} | {: >2} | {: >2} | {: >2} | {: >2}",
+        "Team", "MP", "W", "D", "L", "P"
+    );
+
+    vec![header]
+        .into_iter()
+        .chain(teams.iter().map(|row| row.1.to_string(row.0)))
+        .collect::<Vec<String>>()
+        .join("\n")
 }
