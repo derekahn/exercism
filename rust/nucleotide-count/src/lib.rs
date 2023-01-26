@@ -1,41 +1,21 @@
 use std::collections::HashMap;
 
-fn is_valid(n: char) -> Result<(), char> {
-    let valid = vec!['A', 'C', 'G', 'T'];
-    if !valid.contains(&n) {
-        return Err(n);
-    }
-    Ok(())
-}
+const NUCLEOTIDE: &str = "ACGT";
 
 pub fn count(nucleotide: char, dna: &str) -> Result<usize, char> {
-    is_valid(nucleotide)?;
-
-    let sequence = dna.chars().into_iter();
-    let mut count: usize = 0;
-    for n in sequence {
-        is_valid(n)?;
-        if n == nucleotide {
-            count += 1;
-        }
-    }
-    Ok(count)
+    let mut counts = nucleotide_counts(dna)?;
+    counts.remove(&nucleotide).ok_or(nucleotide)
 }
 
 pub fn nucleotide_counts(dna: &str) -> Result<HashMap<char, usize>, char> {
-    let mut map = "ACGT"
+    let mut counts = NUCLEOTIDE
         .chars()
-        .map(|c| (c, 0))
+        .into_iter()
+        .map(|n| (n, 0))
         .collect::<HashMap<char, usize>>();
 
-    for n in dna.chars().into_iter() {
-        is_valid(n)?;
-        match map.get(&n) {
-            Some(count) => {
-                map.insert(n, count + 1);
-            }
-            None => {}
-        }
+    for c in dna.chars() {
+        counts.get_mut(&c).map(|count| *count += 1).ok_or(c)?;
     }
-    Ok(map)
+    Ok(counts)
 }
