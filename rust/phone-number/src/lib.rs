@@ -1,25 +1,18 @@
 pub fn number(user_number: &str) -> Option<String> {
-    let digits: Vec<u32> = user_number
+    let digits: String = user_number
         .chars()
-        .filter(|c| c.is_ascii_digit())
-        .filter_map(|c| c.to_digit(10))
+        .filter(|c| c.is_digit(10))
+        .enumerate()
+        .skip_while(|(i, c)| *i == 0 && *c == '1')
+        .map(|(_, c)| c)
         .collect();
 
-    match digits.len() {
-        10 => {
-            if digits[0] < 2 || digits[3] < 2 {
-                None
-            } else {
-                Some(digits.iter().map(|n| n.to_string()).collect())
-            }
-        }
-        11 if digits[0] == 1 => {
-            if digits[1] < 2 || digits[4] < 2 {
-                None
-            } else {
-                Some(digits[1..].iter().map(|n| n.to_string()).collect())
-            }
-        }
-        _ => None,
+    if digits.len() != 10
+        || (digits.chars().nth(0).unwrap() as u8) < b'2'
+        || (digits.chars().nth(3).unwrap() as u8) < b'2'
+    {
+        None
+    } else {
+        Some(digits)
     }
 }
