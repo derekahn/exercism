@@ -1,6 +1,6 @@
 pub fn series(digits: &str, len: usize) -> Vec<String> {
     if len == 0 {
-        return (0..digits.len()).map(|_| "".to_string()).collect();
+        return vec!["".to_owned(); digits.len() + 1];
     }
     digits
         .chars()
